@@ -13,35 +13,67 @@
         model-viewer {
             width: 100vw;
             height: 100vh;
-            background-color: #2a2a2a; /* Neutral dark background */
+            background-color: #2a2a2a;
         }
 
-        /* Improved styling for the AR button, centered at the bottom */
+        /* The AR Entry Button */
         .ar-button {
             background-color: #ffffff;
             color: #222222;
             border-radius: 30px;
             border: 2px solid #222222;
             position: absolute;
-            bottom: 40px; /* Positioned clearly above the bottom edge */
+            bottom: 40px;
             left: 50%;
-            transform: translateX(-50%); /* Centers the button horizontally */
+            transform: translateX(-50%);
             padding: 12px 24px;
             font-size: 16px;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 100; /* Ensures it stays on top */
-            white-space: nowrap;
+            z-index: 100;
         }
-        
-        .ar-button:active { background-color: #E0E0E0; }
 
+        /* The Hotspot (The dot on the car) */
+        .hotspot {
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: #ff3e3e;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            cursor: pointer;
+        }
+
+        /* Video Overlay Window */
+        #video-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 560px;
+            background: black;
+            z-index: 200;
+            border: 2px solid white;
+        }
+
+        #close-video {
+            color: white;
+            position: absolute;
+            top: -30px;
+            right: 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
     <model-viewer 
+        id="humvee-model"
         src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
         ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
         alt="A detailed 3D model of a damaged Humvee"
@@ -52,16 +84,10 @@
         camera-controls 
         touch-action="pan-y"
         shadow-intensity="1.5"
-        shadow-softness="0.5"
-        exposure="1.2"
-        environment-image="neutral"
-        auto-rotate>
+        exposure="1.2">
         
-        <button slot="ar-button" class="ar-button">
-          🏢 View in your Space
+        <button class="hotspot" slot="hotspot-1" data-position="0m 1m 0m" data-normal="0m 1m 0m" onclick="triggerEvent()">
         </button>
 
-    </model-viewer>
-
-</body>
-</html>
+        <button slot="ar-button" class="ar-button">
+          🏢 View in your Space
