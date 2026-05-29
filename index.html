@@ -1,15 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AR Humvee Test</title>
+    <title>AR Humvee Experience</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
     <style>
-        body { margin: 0; overflow: hidden; }
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        
         model-viewer {
             width: 100vw;
             height: 100vh;
-            background-color: #222;
+            background-color: #2a2a2a; /* Neutral dark background */
         }
+
+        /* Improved styling for the AR button, centered at the bottom */
+        .ar-button {
+            background-color: #ffffff;
+            color: #222222;
+            border-radius: 30px;
+            border: 2px solid #222222;
+            position: absolute;
+            bottom: 40px; /* Positioned clearly above the bottom edge */
+            left: 50%;
+            transform: translateX(-50%); /* Centers the button horizontally */
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 100; /* Ensures it stays on top */
+            white-space: nowrap;
+        }
+        
+        .ar-button:active { background-color: #E0E0E0; }
+
     </style>
 </head>
 <body>
@@ -17,15 +44,21 @@
     <model-viewer 
         src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
         ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
-        ar 
-        ar-modes="webxr scene-viewer quick-look" 
+        alt="A detailed 3D model of a damaged Humvee"
+        ar
+        ar-modes="scene-viewer quick-look" 
+        ar-placement="floor"
+        ar-scale="auto"
         camera-controls 
         touch-action="pan-y"
-        shadow-intensity="1"
+        shadow-intensity="1.5"
+        shadow-softness="0.5"
+        exposure="1.2"
+        environment-image="neutral"
         auto-rotate>
         
-        <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; top: 16px; right: 16px; padding: 10px;">
-          👋 View in your Space
+        <button slot="ar-button" class="ar-button">
+          🏢 View in your Space
         </button>
 
     </model-viewer>
