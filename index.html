@@ -16,7 +16,7 @@
             background-color: #2a2a2a;
         }
 
-        /* The AR Entry Button */
+        /* Standard AR button at the bottom */
         .ar-button {
             background-color: #ffffff;
             color: #222222;
@@ -30,43 +30,68 @@
             font-size: 16px;
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            cursor: pointer;
             z-index: 100;
         }
 
-        /* The Hotspot (The dot on the car) */
+        /* LARGER, PULSING RED BUTTON */
         .hotspot {
-            display: block;
-            width: 20px;
-            height: 20px;
-            border-radius: 10px;
-            border: none;
+            width: 40px;  /* Doubled size */
+            height: 40px; /* Doubled size */
+            border-radius: 50%;
+            border: 3px solid white;
             background-color: #ff3e3e;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
             cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 62, 62, 0.8);
+            animation: pulse 2s infinite;
         }
 
-        /* Video Overlay Window */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.7); }
+            70% { transform: scale(1.2); box-shadow: 0 0 0 15px rgba(255, 62, 62, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
+        }
+
+        /* Label for the button */
+        .hotspot-annotation {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            color: rgba(0, 0, 0, 0.8);
+            display: block;
+            font-family: Futura, Helvetica Neue, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            left: calc(100% + 10px);
+            padding: 8px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: max-content;
+        }
+
+        /* Video Overlay */
         #video-container {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
+            width: 90%;
             max-width: 560px;
             background: black;
             z-index: 200;
             border: 2px solid white;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
         }
 
         #close-video {
             color: white;
             position: absolute;
-            top: -30px;
+            top: -40px;
             right: 0;
+            padding: 10px;
+            background: #333;
             cursor: pointer;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -80,14 +105,44 @@
         ar
         ar-modes="scene-viewer quick-look" 
         ar-placement="floor"
-        ar-scale="auto"
         camera-controls 
-        touch-action="pan-y"
         shadow-intensity="1.5"
         exposure="1.2">
         
-        <button class="hotspot" slot="hotspot-1" data-position="0m 1m 0m" data-normal="0m 1m 0m" onclick="triggerEvent()">
+        <button class="hotspot" slot="hotspot-video" data-position="0m 1.2m 1.5m" data-normal="0m 0m 1m" onclick="triggerEvent()">
+            <div class="hotspot-annotation">Watch Footage</div>
         </button>
 
         <button slot="ar-button" class="ar-button">
           🏢 View in your Space
+        </button>
+
+    </model-viewer>
+
+    <div id="video-container">
+        <span id="close-video" onclick="closeVideo()">CLOSE [X]</span>
+        <iframe id="video-iframe" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        const modelViewer = document.querySelector("#humvee-model");
+
+        function triggerEvent() {
+            const videoContainer = document.getElementById('video-container');
+            const iframe = document.getElementById('video-iframe');
+            
+            // Link to the video
+            iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"; 
+            videoContainer.style.display = 'block';
+        }
+
+        function closeVideo() {
+            const videoContainer = document.getElementById('video-container');
+            const iframe = document.getElementById('video-iframe');
+            iframe.src = ""; 
+            videoContainer.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
