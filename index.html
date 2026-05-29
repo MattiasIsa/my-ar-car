@@ -4,69 +4,42 @@
     <title>AR Humvee Experience</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    
     <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; }
-        
-        model-viewer {
-            width: 100vw;
-            height: 100vh;
-            background-color: #2a2a2a;
+        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
+        model-viewer { width: 100vw; height: 100vh; }
+
+        /* GIANT PULSING BUTTON */
+        .hotspot {
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background-color: #ff0000;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+            animation: giant-pulse 1.5s infinite;
         }
 
-        /* Standard AR button at the bottom */
-        .ar-button {
-            background-color: #ffffff;
-            color: #222222;
-            border-radius: 30px;
-            border: 2px solid #222222;
+        @keyframes giant-pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; box-shadow: 0 0 60px rgba(255, 0, 0, 1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hotspot-label {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
             position: absolute;
-            bottom: 40px;
+            top: 90px;
             left: 50%;
             transform: translateX(-50%);
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            z-index: 100;
-        }
-
-        /* LARGER, PULSING RED BUTTON */
-        .hotspot {
-            width: 40px;  /* Doubled size */
-            height: 40px; /* Doubled size */
-            border-radius: 50%;
-            border: 3px solid white;
-            background-color: #ff3e3e;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 62, 62, 0.8);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.7); }
-            70% { transform: scale(1.2); box-shadow: 0 0 0 15px rgba(255, 62, 62, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
-        }
-
-        /* Label for the button */
-        .hotspot-annotation {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-            color: rgba(0, 0, 0, 0.8);
-            display: block;
-            font-family: Futura, Helvetica Neue, sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            left: calc(100% + 10px);
-            padding: 8px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: max-content;
+            white-space: nowrap;
+            font-size: 18px;
+            color: black;
+            border: 2px solid red;
         }
 
         /* Video Overlay */
@@ -76,71 +49,71 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 560px;
-            background: black;
-            z-index: 200;
-            border: 2px solid white;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            width: 95%;
+            max-width: 800px;
+            z-index: 1000;
+            background: #000;
+            border: 3px solid #ff0000;
         }
 
-        #close-video {
-            color: white;
+        #close-btn {
             position: absolute;
-            top: -40px;
+            top: -45px;
             right: 0;
-            padding: 10px;
-            background: #333;
+            background: red;
+            color: white;
+            padding: 8px 15px;
+            font-weight: bold;
             cursor: pointer;
+        }
+
+        .ar-button {
+            background: white;
+            border-radius: 30px;
+            padding: 15px 30px;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            border: 2px solid #000;
         }
     </style>
 </head>
 <body>
 
     <model-viewer 
-        id="humvee-model"
+        id="model"
         src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
         ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
-        alt="A detailed 3D model of a damaged Humvee"
-        ar
-        ar-modes="scene-viewer quick-look" 
-        ar-placement="floor"
-        camera-controls 
-        shadow-intensity="1.5"
-        exposure="1.2">
+        ar ar-modes="scene-viewer quick-look" ar-placement="floor"
+        camera-controls shadow-intensity="2" exposure="1">
         
-        <button class="hotspot" slot="hotspot-video" data-position="0m 1.2m 1.5m" data-normal="0m 0m 1m" onclick="triggerEvent()">
-            <div class="hotspot-annotation">Watch Footage</div>
+        <button class="hotspot" slot="hotspot-main" data-position="0m 1m 2.5m" data-normal="0m 0m 1m" onclick="openVid()">
+            <div class="hotspot-label">CLICK TO PLAY VIDEO</div>
         </button>
 
-        <button slot="ar-button" class="ar-button">
-          🏢 View in your Space
-        </button>
-
+        <button slot="ar-button" class="ar-button">🚀 OPEN AR MODE</button>
     </model-viewer>
 
     <div id="video-container">
-        <span id="close-video" onclick="closeVideo()">CLOSE [X]</span>
-        <iframe id="video-iframe" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+        <div id="close-btn" onclick="closeVid()">CLOSE X</div>
+        <div style="padding-top: 56.25%; position: relative;">
+            <iframe id="player" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+            src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
-        const modelViewer = document.querySelector("#humvee-model");
-
-        function triggerEvent() {
-            const videoContainer = document.getElementById('video-container');
-            const iframe = document.getElementById('video-iframe');
-            
-            // Link to the video
-            iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"; 
-            videoContainer.style.display = 'block';
+        function openVid() {
+            const container = document.getElementById('video-container');
+            const player = document.getElementById('player');
+            player.src = "https://www.youtube.com/embed/vFRSiQGNZFo?autoplay=1";
+            container.style.display = 'block';
         }
-
-        function closeVideo() {
-            const videoContainer = document.getElementById('video-container');
-            const iframe = document.getElementById('video-iframe');
-            iframe.src = ""; 
-            videoContainer.style.display = 'none';
+        function closeVid() {
+            document.getElementById('video-container').style.display = 'none';
+            document.getElementById('player').src = "";
         }
     </script>
 
