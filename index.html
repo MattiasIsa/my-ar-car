@@ -1,14 +1,34 @@
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR Humvee Test</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        body { margin: 0; }
+        model-viewer {
+            width: 100vw;
+            height: 100vh;
+            background-color: #222; /* Dark background so white models pop */
+        }
+    </style>
+</head>
+<body>
 
-<model-viewer 
-  src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.glb" 
-  ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
-  ar 
-  ar-modes="webxr scene-viewer quick-look" 
-  camera-controls 
-  shadow-intensity="1" 
-  style="width: 100%; height: 100vh;">
-  <button slot="ar-button" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px;">
-    🚀 View in my Room
-  </button>
-</model-viewer>
+    <model-viewer 
+        src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
+        ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
+        ar 
+        ar-modes="webxr scene-viewer quick-look" 
+        camera-controls 
+        touch-action="pan-y"
+        alt="A 3D model of a Humvee"
+        shadow-intensity="1">
+        
+        <div id="error" style="color: white; padding: 20px; font-family: sans-serif;">
+            If you see this and a black screen, the model file path is wrong.
+        </div>
+        
+    </model-viewer>
+
+</body>
+</html>
