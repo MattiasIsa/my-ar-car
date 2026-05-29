@@ -1,76 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AR Humvee Experience</title>
+    <title>Framed AR Test</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #222; }
-        model-viewer { width: 100vw; height: 100vh; }
+        body { 
+            background-color: #f0f0f0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px;
+        }
 
-        .ar-button {
-            background: white;
-            border-radius: 30px;
-            padding: 15px 30px;
+        /* This is your frame */
+        .model-container {
+            width: 90%;
+            max-width: 500px; /* Limits the width */
+            height: 400px;    /* Fixed height for the frame */
+            border: 5px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #222;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .custom-ar-button {
             position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-weight: bold;
-            border: 2px solid #000;
-            z-index: 100;
-        }
-
-        .hotspot {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            bottom: 15px;
+            right: 15px;
+            background: white;
             border: none;
-            background-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255,0,0,1);
-            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
             font-weight: bold;
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-    <model-viewer 
-        id="model"
-        src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
-        ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
-        ar 
-        ar-modes="scene-viewer quick-look webxr" 
-        ar-placement="floor"
-        camera-controls
-        shadow-intensity="2">
-        
-        <button class="hotspot" slot="hotspot-video" 
-                data-position="0m 1.5m 2m" 
-                data-normal="0m 0m 1m" 
-                onclick="location.href='https://www.youtube.com/watch?v=vFRSiQGNZFo'">
-            PLAY
-        </button>
+    <h1>Vehicle Inspection</h1>
+    <p>Check the damaged Humvee below. Click the AR icon to see it in your room.</p>
 
-        <button slot="ar-button" class="ar-button">🚀 START AR CAMERA</button>
-    </model-viewer>
+    <div class="model-container">
+        <model-viewer 
+            src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
+            ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
+            ar 
+            ar-modes="scene-viewer quick-look" 
+            camera-controls 
+            auto-rotate>
+            
+            <button slot="ar-button" class="custom-ar-button">
+                View in AR 🎥
+            </button>
+        </model-viewer>
+    </div>
 
-    <script>
-        // This script handles the 'click' inside the web view
-        // The 'onclick' attribute on the button handles it in Scene Viewer (Android)
-        document.querySelector(".hotspot").addEventListener("click", () => {
-            window.open("https://www.youtube.com/watch?v=vFRSiQGNZFo", "_blank");
-        });
-    </script>
+    <p style="margin-top: 20px;">Detailed damage report follows here...</p>
 
 </body>
 </html>
