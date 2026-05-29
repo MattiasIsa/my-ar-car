@@ -6,55 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
-        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #000; }
+        body { margin: 0; overflow: hidden; font-family: sans-serif; background-color: #222; }
         model-viewer { width: 100vw; height: 100vh; }
 
-        /* GIANT PULSING BUTTON */
-        .hotspot {
-            width: 80px; 
-            height: 80px; 
-            border-radius: 50%;
-            border: 4px solid #fff;
-            background-color: #ff0000;
-            cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
-            animation: giant-pulse 1.5s infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .ar-button {
+            background: white;
+            border-radius: 30px;
+            padding: 15px 30px;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            border: 2px solid #000;
+            z-index: 100;
         }
 
-        @keyframes giant-pulse {
+        .hotspot {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255,0,0,1);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
-        }
-
-        .hotspot-label {
-            background: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            position: absolute;
-            bottom: -30px;
-            white-space: nowrap;
-        }
-
-        /* Video Overlay (High Z-Index to stay above AR) */
-        #video-container {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            z-index: 9999;
-            background: #000;
-            border: 2px solid white;
-        }
-
-        #close-btn {
-            background: red; color: white; padding: 10px; cursor: pointer; text-align: center;
         }
     </style>
 </head>
@@ -65,36 +49,27 @@
         src="destroyed_hmmwv_humvee_m1114_in_ukraine.glb" 
         ios-src="Destroyed_HMMWV_Humvee_M1114_in_Ukraine.usdz"
         ar 
-        ar-modes="webxr" 
+        ar-modes="scene-viewer quick-look webxr" 
         ar-placement="floor"
-        camera-controls>
+        camera-controls
+        shadow-intensity="2">
         
-        <button class="hotspot" slot="hotspot-video" data-position="0m 1m 2m" data-normal="0m 0m 1m" onclick="openVid()">
-            <div class="hotspot-label">PLAY VIDEO</div>
+        <button class="hotspot" slot="hotspot-video" 
+                data-position="0m 1.5m 2m" 
+                data-normal="0m 0m 1m" 
+                onclick="location.href='https://www.youtube.com/watch?v=vFRSiQGNZFo'">
+            PLAY
         </button>
 
-        <button slot="ar-button" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 15px; border-radius: 10px; border: none; background: white; font-weight: bold;">
-            🚀 ENTER AR MODE
-        </button>
-
+        <button slot="ar-button" class="ar-button">🚀 START AR CAMERA</button>
     </model-viewer>
 
-    <div id="video-container">
-        <div id="close-btn" onclick="closeVid()">CLOSE [X]</div>
-        <iframe id="player" width="100%" height="300" src="" frameborder="0" allow="autoplay" allowfullscreen></iframe>
-    </div>
-
     <script>
-        function openVid() {
-            const container = document.getElementById('video-container');
-            const player = document.getElementById('player');
-            player.src = "https://www.youtube.com/embed/vFRSiQGNZFo?autoplay=1";
-            container.style.display = 'block';
-        }
-        function closeVid() {
-            document.getElementById('video-container').style.display = 'none';
-            document.getElementById('player').src = "";
-        }
+        // This script handles the 'click' inside the web view
+        // The 'onclick' attribute on the button handles it in Scene Viewer (Android)
+        document.querySelector(".hotspot").addEventListener("click", () => {
+            window.open("https://www.youtube.com/watch?v=vFRSiQGNZFo", "_blank");
+        });
     </script>
 
 </body>
